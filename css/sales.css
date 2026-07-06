@@ -1,0 +1,135 @@
+/* sales.css — Sales page styles */
+
+/* ─── Sale Form Card ────────────────────────────────────── */
+.sales-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 1000px) { .sales-layout { grid-template-columns: 1fr; } }
+
+.sale-form-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: sticky;
+  top: calc(var(--header-h) + 20px);
+}
+
+.sale-form-card__header {
+  background: linear-gradient(135deg, var(--green-800), var(--green-600));
+  padding: 20px;
+  color: var(--white);
+}
+.sale-form-card__header h2 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.sale-form-card__header p { font-size: 12px; opacity: .75; }
+
+.sale-form-card__body { padding: 20px; }
+
+/* Product selector card */
+.product-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 2px;
+}
+.product-option {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: center;
+}
+.product-option:hover { border-color: var(--green-300); background: var(--green-50); }
+.product-option--selected { border-color: var(--green-500); background: var(--green-50); }
+.product-option--soldout { opacity: .45; pointer-events: none; }
+.product-option img, .product-option .product-option__icon {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  background: var(--green-50);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; color: var(--green-300);
+}
+.product-option__name { font-size: 11px; font-weight: 600; line-height: 1.3; }
+.product-option__price { font-size: 11px; color: var(--green-600); font-weight: 700; }
+.product-option__stock { font-size: 10px; color: var(--text-muted); }
+
+/* Sale Summary Preview */
+.sale-preview {
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 16px;
+}
+.sale-preview__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 3px 0;
+}
+.sale-preview__row--total {
+  border-top: 1px solid var(--green-200);
+  margin-top: 6px;
+  padding-top: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--green-800);
+}
+.sale-preview__label { color: var(--text-secondary); }
+.sale-preview__value { font-weight: 600; }
+
+/* ─── Sales History Table ───────────────────────────────── */
+.sales-history-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.sales-history-card__header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.sales-history-card__header h2 {
+  font-family: var(--font-display);
+  font-size: 15px; font-weight: 700;
+}
+
+/* Sale row highlight */
+.sale-row-new { animation: highlightRow 2s ease; }
+@keyframes highlightRow {
+  0%   { background: var(--green-100); }
+  100% { background: transparent; }
+}
+
+/* ─── Quick Stats Row ───────────────────────────────────── */
+.sales-quick-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media (max-width: 600px) { .sales-quick-stats { grid-template-columns: 1fr; } }
+.quick-stat {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+.quick-stat__label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+.quick-stat__value { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--text-primary); }
