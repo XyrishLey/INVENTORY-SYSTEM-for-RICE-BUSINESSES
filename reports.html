@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports — RiceMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/reports.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icon"><i class="fas fa-seedling"></i></div>
+      <div class="sidebar__logo-text">
+        <strong id="store-name">RiceMart</strong>
+        <span>Inventory System</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <p class="nav__section-label">Main</p>
+      <a href="dashboard.html" class="nav__link"><i class="fas fa-chart-pie"></i> Dashboard</a>
+      <a href="inventory.html" class="nav__link"><i class="fas fa-boxes-stacked"></i> Inventory</a>
+      <a href="sales.html" class="nav__link"><i class="fas fa-cash-register"></i> Sales</a>
+      <a href="reports.html" class="nav__link"><i class="fas fa-chart-bar"></i> Reports</a>
+      <p class="nav__section-label">System</p>
+      <a href="settings.html" class="nav__link"><i class="fas fa-gear"></i> Settings</a>
+    </nav>
+    <div class="sidebar__footer">
+      <p>RiceMart v1.0</p>
+      <p>© 2026 All rights reserved</p>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="topbar__hamburger btn-icon" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+      <h1 class="topbar__title">Reports & Analytics</h1>
+      <div class="topbar__actions">
+        <div class="notif-bell-wrap" style="position:relative;">
+          <button class="btn-icon" id="notif-bell"><i class="fas fa-bell"></i></button>
+          <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
+          <div class="notif-panel" id="notif-panel">
+            <div class="notif-panel__header">Notifications <span>Recent alerts</span></div>
+            <div class="notif-list" id="notif-list"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page-body">
+      <div class="page-header">
+        <div class="page-header__info">
+          <h1>Reports & Analytics</h1>
+          <p>Business performance overview and detailed reports.</p>
+        </div>
+        <div class="page-header__actions">
+          <button class="btn btn--outline" id="btn-export-csv"><i class="fas fa-file-csv"></i> Export CSV</button>
+          <button class="btn btn--primary" id="btn-print"><i class="fas fa-print"></i> Print Report</button>
+        </div>
+      </div>
+
+      <!-- Period Tabs -->
+      <div class="reports-header-row">
+        <div class="reports-period-tabs">
+          <button class="period-tab period-tab--active" data-period="daily">Daily</button>
+          <button class="period-tab" data-period="weekly">Weekly</button>
+          <button class="period-tab" data-period="monthly">Monthly</button>
+          <button class="period-tab" data-period="yearly">Yearly</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label style="font-size:13px;color:var(--text-secondary);">Year:</label>
+          <select class="form-control" id="report-year" style="max-width:100px;"></select>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="report-summary-grid" id="report-summary-grid"></div>
+
+      <!-- Charts -->
+      <div class="reports-charts-row">
+        <div class="chart-card">
+          <div class="chart-card__header">
+            <div>
+              <div class="chart-card__title" id="report-chart-title">Daily Revenue & Profit</div>
+              <div class="chart-card__subtitle" id="report-chart-sub">Last 7 days</div>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height:280px;">
+            <canvas id="report-main-chart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card__header">
+            <div>
+              <div class="chart-card__title">Product Distribution</div>
+              <div class="chart-card__subtitle">Revenue share by product</div>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height:280px;">
+            <canvas id="report-donut-chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Performance Table -->
+      <div class="perf-table-card">
+        <div class="perf-table-card__header">
+          <h2>Product Performance</h2>
+          <span style="font-size:12px;color:var(--text-muted);">All-time sales data</span>
+        </div>
+        <div class="table-wrap" style="border:none;border-radius:0;">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Units Sold</th>
+                <th>Revenue</th>
+                <th>Profit</th>
+                <th>Performance</th>
+              </tr>
+            </thead>
+            <tbody id="perf-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Stock Report -->
+      <div class="perf-table-card">
+        <div class="perf-table-card__header">
+          <h2>Current Inventory Status</h2>
+          <span style="font-size:12px;color:var(--text-muted);">Live stock levels</span>
+        </div>
+        <div class="table-wrap" style="border:none;border-radius:0;">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Price / Sack</th>
+                <th>Current Stock</th>
+                <th>Threshold</th>
+                <th>Status</th>
+                <th>Stock Value</th>
+              </tr>
+            </thead>
+            <tbody id="stock-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/main.js"></script>
+<script src="js/reports.js"></script>
+</body>
+</html>

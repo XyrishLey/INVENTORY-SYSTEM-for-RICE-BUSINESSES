@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory — RiceMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/inventory.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icon"><i class="fas fa-seedling"></i></div>
+      <div class="sidebar__logo-text">
+        <strong id="store-name">RiceMart</strong>
+        <span>Inventory System</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <p class="nav__section-label">Main</p>
+      <a href="dashboard.html" class="nav__link"><i class="fas fa-chart-pie"></i> Dashboard</a>
+      <a href="inventory.html" class="nav__link"><i class="fas fa-boxes-stacked"></i> Inventory</a>
+      <a href="sales.html" class="nav__link"><i class="fas fa-cash-register"></i> Sales</a>
+      <a href="reports.html" class="nav__link"><i class="fas fa-chart-bar"></i> Reports</a>
+      <p class="nav__section-label">System</p>
+      <a href="settings.html" class="nav__link"><i class="fas fa-gear"></i> Settings</a>
+    </nav>
+    <div class="sidebar__footer">
+      <p>RiceMart v1.0</p>
+      <p>© 2026 All rights reserved</p>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="topbar__hamburger btn-icon" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+      <h1 class="topbar__title">Inventory</h1>
+      <div class="topbar__actions">
+        <div class="notif-bell-wrap" style="position:relative;">
+          <button class="btn-icon" id="notif-bell"><i class="fas fa-bell"></i></button>
+          <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
+          <div class="notif-panel" id="notif-panel">
+            <div class="notif-panel__header">Notifications <span>Recent alerts</span></div>
+            <div class="notif-list" id="notif-list"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page-body">
+      <div class="page-header">
+        <div class="page-header__info">
+          <h1>Product Inventory</h1>
+          <p>Manage your rice products, stock levels, and pricing.</p>
+        </div>
+        <div class="page-header__actions">
+          <button class="btn btn--primary" id="btn-add-product"><i class="fas fa-plus"></i> Add Product</button>
+          <div class="view-toggles">
+            <button class="view-toggle-btn view-toggle-btn--active" id="btn-grid-view" title="Grid View"><i class="fas fa-grip"></i></button>
+            <button class="view-toggle-btn" id="btn-list-view" title="List View"><i class="fas fa-list"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="inventory-stats-row" id="inventory-stats"></div>
+
+      <!-- Toolbar -->
+      <div class="inventory-toolbar">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" class="form-control" id="search-input" placeholder="Search products...">
+        </div>
+        <select class="form-control" id="filter-type" style="max-width:180px;">
+          <option value="">All Types</option>
+        </select>
+        <select class="form-control" id="filter-status" style="max-width:160px;">
+          <option value="">All Status</option>
+          <option value="instock">In Stock</option>
+          <option value="low">Low Stock</option>
+          <option value="out">Sold Out</option>
+        </select>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="product-grid active" id="product-grid"></div>
+
+      <!-- Product List View -->
+      <div class="product-list-view" id="product-list-view">
+        <div class="table-wrap">
+          <table id="product-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Price / Sack</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="product-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Add/Edit Product Modal -->
+<div class="modal-overlay" id="modal-product">
+  <div class="modal">
+    <div class="modal__header">
+      <h2 class="modal__title" id="modal-product-title">Add New Product</h2>
+      <button class="modal__close" id="modal-product-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal__body">
+      <div class="img-upload-zone" id="img-upload-zone">
+        <input type="file" id="img-input" accept="image/*">
+        <img class="img-preview" id="img-preview" alt="Preview">
+        <div id="img-placeholder">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p><strong>Click to upload</strong> or drag & drop</p>
+          <p>JPG, PNG or WEBP (max 2MB)</p>
+        </div>
+      </div>
+      <div class="form-row mt-2">
+        <div class="form-group">
+          <label class="form-label">Product Name *</label>
+          <input type="text" class="form-control" id="prod-name" placeholder="e.g. Premium Jasmine Rice">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Rice Type *</label>
+          <input type="text" class="form-control" id="prod-type" placeholder="e.g. Jasmine, Sinandomeng">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Selling Price (₱/sack) *</label>
+          <input type="number" class="form-control" id="prod-price" placeholder="2500" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cost Price (₱/sack) *</label>
+          <input type="number" class="form-control" id="prod-cost" placeholder="1800" min="0">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Initial Stock (sacks) *</label>
+          <input type="number" class="form-control" id="prod-stock" placeholder="50" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Low Stock Alert Threshold</label>
+          <input type="number" class="form-control" id="prod-threshold" placeholder="10" min="1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Weight per Sack</label>
+        <input type="text" class="form-control" id="prod-weight" placeholder="50kg">
+      </div>
+    </div>
+    <div class="modal__footer">
+      <button class="btn btn--secondary" id="modal-product-cancel">Cancel</button>
+      <button class="btn btn--primary" id="modal-product-save"><i class="fas fa-save"></i> Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- Update Stock Modal -->
+<div class="modal-overlay" id="modal-stock">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal__header">
+      <h2 class="modal__title">Update Stock</h2>
+      <button class="modal__close" id="modal-stock-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal__body">
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;" id="stock-product-name"></p>
+      <div class="form-group">
+        <label class="form-label">Action</label>
+        <select class="form-control" id="stock-action">
+          <option value="add">Add Stock (Restock)</option>
+          <option value="remove">Remove Stock</option>
+          <option value="set">Set Exact Amount</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Quantity (sacks)</label>
+        <input type="number" class="form-control" id="stock-qty" min="1" placeholder="Enter quantity">
+      </div>
+      <p style="font-size:13px;" id="stock-current-label"></p>
+    </div>
+    <div class="modal__footer">
+      <button class="btn btn--secondary" id="modal-stock-cancel">Cancel</button>
+      <button class="btn btn--primary" id="modal-stock-save"><i class="fas fa-save"></i> Update Stock</button>
+    </div>
+  </div>
+</div>
+
+<!-- Change Price Modal -->
+<div class="modal-overlay" id="modal-price">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal__header">
+      <h2 class="modal__title">Change Price</h2>
+      <button class="modal__close" id="modal-price-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal__body">
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;" id="price-product-name"></p>
+      <div class="form-group">
+        <label class="form-label">New Selling Price (₱/sack)</label>
+        <input type="number" class="form-control" id="price-new" min="1" placeholder="Enter new price">
+      </div>
+      <div class="form-group">
+        <label class="form-label">New Cost Price (₱/sack)</label>
+        <input type="number" class="form-control" id="cost-new" min="1" placeholder="Enter new cost price">
+      </div>
+      <p style="font-size:13px;" id="price-current-label"></p>
+    </div>
+    <div class="modal__footer">
+      <button class="btn btn--secondary" id="modal-price-cancel">Cancel</button>
+      <button class="btn btn--primary" id="modal-price-save"><i class="fas fa-save"></i> Update Price</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-overlay" id="modal-delete">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal__header">
+      <h2 class="modal__title" style="color:var(--danger);">Delete Product</h2>
+      <button class="modal__close" id="modal-delete-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal__body">
+      <p style="font-size:14px;">Are you sure you want to delete <strong id="delete-product-name"></strong>? This action cannot be undone.</p>
+    </div>
+    <div class="modal__footer">
+      <button class="btn btn--secondary" id="modal-delete-cancel">Cancel</button>
+      <button class="btn btn--danger" id="modal-delete-confirm"><i class="fas fa-trash"></i> Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="js/storage.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/main.js"></script>
+<script src="js/inventory.js"></script>
+</body>
+</html>

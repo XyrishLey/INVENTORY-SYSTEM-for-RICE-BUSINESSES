@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales — RiceMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sales.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icon"><i class="fas fa-seedling"></i></div>
+      <div class="sidebar__logo-text">
+        <strong id="store-name">RiceMart</strong>
+        <span>Inventory System</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <p class="nav__section-label">Main</p>
+      <a href="dashboard.html" class="nav__link"><i class="fas fa-chart-pie"></i> Dashboard</a>
+      <a href="inventory.html" class="nav__link"><i class="fas fa-boxes-stacked"></i> Inventory</a>
+      <a href="sales.html" class="nav__link"><i class="fas fa-cash-register"></i> Sales</a>
+      <a href="reports.html" class="nav__link"><i class="fas fa-chart-bar"></i> Reports</a>
+      <p class="nav__section-label">System</p>
+      <a href="settings.html" class="nav__link"><i class="fas fa-gear"></i> Settings</a>
+    </nav>
+    <div class="sidebar__footer">
+      <p>RiceMart v1.0</p>
+      <p>© 2026 All rights reserved</p>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="topbar__hamburger btn-icon" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+      <h1 class="topbar__title">Sales</h1>
+      <div class="topbar__actions">
+        <div class="notif-bell-wrap" style="position:relative;">
+          <button class="btn-icon" id="notif-bell"><i class="fas fa-bell"></i></button>
+          <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
+          <div class="notif-panel" id="notif-panel">
+            <div class="notif-panel__header">Notifications <span>Recent alerts</span></div>
+            <div class="notif-list" id="notif-list"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page-body">
+      <div class="page-header">
+        <div class="page-header__info">
+          <h1>Record a Sale</h1>
+          <p>Process transactions and manage your sales history.</p>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="sales-quick-stats" id="sales-quick-stats"></div>
+
+      <div class="sales-layout">
+        <!-- Sale Form -->
+        <div class="sale-form-card">
+          <div class="sale-form-card__header">
+            <h2><i class="fas fa-cash-register"></i> New Transaction</h2>
+            <p>Select a product and enter quantity</p>
+          </div>
+          <div class="sale-form-card__body">
+            <div class="form-group">
+              <label class="form-label">Select Product</label>
+              <div class="product-selector" id="sale-product-selector">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Quantity (sacks)</label>
+              <input type="number" class="form-control" id="sale-qty" min="1" value="1" placeholder="Enter quantity">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Override Price (optional)</label>
+              <input type="number" class="form-control" id="sale-price-override" placeholder="Leave blank to use default price">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" id="sale-date">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Notes (optional)</label>
+              <input type="text" class="form-control" id="sale-notes" placeholder="Customer, delivery info, etc.">
+            </div>
+
+            <!-- Preview -->
+            <div class="sale-preview" id="sale-preview" style="display:none;">
+              <div class="sale-preview__row">
+                <span class="sale-preview__label">Product</span>
+                <span class="sale-preview__value" id="prev-product">—</span>
+              </div>
+              <div class="sale-preview__row">
+                <span class="sale-preview__label">Quantity</span>
+                <span class="sale-preview__value" id="prev-qty">—</span>
+              </div>
+              <div class="sale-preview__row">
+                <span class="sale-preview__label">Unit Price</span>
+                <span class="sale-preview__value" id="prev-price">—</span>
+              </div>
+              <div class="sale-preview__row">
+                <span class="sale-preview__label">Cost</span>
+                <span class="sale-preview__value" id="prev-cost">—</span>
+              </div>
+              <div class="sale-preview__row sale-preview__row--total">
+                <span class="sale-preview__label">Total Revenue</span>
+                <span class="sale-preview__value" id="prev-revenue">—</span>
+              </div>
+              <div class="sale-preview__row" style="font-weight:600;color:var(--green-600);">
+                <span class="sale-preview__label">Profit</span>
+                <span class="sale-preview__value" id="prev-profit">—</span>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--full" id="btn-record-sale">
+              <i class="fas fa-check-circle"></i> Record Sale
+            </button>
+          </div>
+        </div>
+
+        <!-- Sales History -->
+        <div class="sales-history-card">
+          <div class="sales-history-card__header">
+            <h2>Sales History</h2>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" class="form-control" id="sales-search" placeholder="Search sales..." style="min-width:160px;">
+              </div>
+              <input type="date" class="form-control" id="sales-date-filter" style="max-width:160px;">
+              <button class="btn btn--outline btn--sm" id="btn-clear-filter">Clear</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Product</th>
+                  <th>Qty</th>
+                  <th>Unit Price</th>
+                  <th>Revenue</th>
+                  <th>Profit</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="sales-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Delete Sale Modal -->
+<div class="modal-overlay" id="modal-delete-sale">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal__header">
+      <h2 class="modal__title" style="color:var(--danger);">Delete Sale Record</h2>
+      <button class="modal__close" id="modal-delete-sale-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal__body">
+      <p style="font-size:14px;">Delete this sale record? Note: inventory stock will <strong>not</strong> be automatically restored.</p>
+    </div>
+    <div class="modal__footer">
+      <button class="btn btn--secondary" id="modal-delete-sale-cancel">Cancel</button>
+      <button class="btn btn--danger" id="modal-delete-sale-confirm"><i class="fas fa-trash"></i> Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="js/storage.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/main.js"></script>
+<script src="js/sales.js"></script>
+</body>
+</html>

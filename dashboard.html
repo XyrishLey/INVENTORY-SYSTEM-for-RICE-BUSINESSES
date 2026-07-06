@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — RiceMart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-icon"><i class="fas fa-seedling"></i></div>
+      <div class="sidebar__logo-text">
+        <strong id="store-name">RiceMart</strong>
+        <span>Inventory System</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <p class="nav__section-label">Main</p>
+      <a href="dashboard.html" class="nav__link"><i class="fas fa-chart-pie"></i> Dashboard</a>
+      <a href="inventory.html" class="nav__link"><i class="fas fa-boxes-stacked"></i> Inventory</a>
+      <a href="sales.html" class="nav__link"><i class="fas fa-cash-register"></i> Sales</a>
+      <a href="reports.html" class="nav__link"><i class="fas fa-chart-bar"></i> Reports</a>
+      <p class="nav__section-label">System</p>
+      <a href="settings.html" class="nav__link"><i class="fas fa-gear"></i> Settings</a>
+    </nav>
+    <div class="sidebar__footer">
+      <p>RiceMart v1.0</p>
+      <p>© 2026 All rights reserved</p>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Main -->
+  <main class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="topbar__hamburger btn-icon" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+      <h1 class="topbar__title">Dashboard</h1>
+      <div class="topbar__actions">
+        <span class="topbar__date" id="topbar-date"></span>
+        <div class="notif-bell-wrap" style="position:relative;">
+          <button class="btn-icon" id="notif-bell"><i class="fas fa-bell"></i></button>
+          <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
+          <div class="notif-panel" id="notif-panel">
+            <div class="notif-panel__header">
+              Notifications <span>Recent alerts</span>
+            </div>
+            <div class="notif-list" id="notif-list"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page-body">
+      <!-- Alerts -->
+      <div id="dashboard-alerts"></div>
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="page-header__info">
+          <h1>Good day! 👋</h1>
+          <p>Here's what's happening with your rice business today.</p>
+        </div>
+        <div class="page-header__actions">
+          <a href="sales.html" class="btn btn--primary"><i class="fas fa-plus"></i> New Sale</a>
+          <a href="inventory.html" class="btn btn--outline"><i class="fas fa-boxes-stacked"></i> Manage Stock</a>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid" id="stats-grid">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-card__header">
+            <div>
+              <div class="chart-card__title">Revenue & Profit</div>
+              <div class="chart-card__subtitle">Last 7 days</div>
+            </div>
+            <div class="tabs" style="margin-bottom:0;">
+              <button class="tab tab--active" data-range="7">7D</button>
+              <button class="tab" data-range="30">30D</button>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height:240px;">
+            <canvas id="chart-revenue"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card__header">
+            <div>
+              <div class="chart-card__title">Stock by Type</div>
+              <div class="chart-card__subtitle">Current inventory</div>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height:240px;">
+            <canvas id="chart-stock"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="bottom-row">
+        <div class="card">
+          <div class="card__header">
+            <span class="card__title">Top Selling Products</span>
+            <a href="reports.html" style="font-size:12px;color:var(--accent);">View All →</a>
+          </div>
+          <div class="card__body" id="top-products-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__header">
+            <span class="card__title">Recent Sales</span>
+            <a href="sales.html" style="font-size:12px;color:var(--accent);">View All →</a>
+          </div>
+          <div class="card__body" id="recent-sales-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/main.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
